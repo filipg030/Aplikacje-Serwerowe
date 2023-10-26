@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    #alist {
+        height: 100%;
+        width: 100%;
+        /* background-color: gray; */
+    }
+
+    a {
+        width: 100px;
+        height: 100px;
+        text-decoration: none;
+        margin: 10px;
+        padding: 10px;
+    }
+</style>
+
+<script>
+    function functionf() {
+        let files = []
+        const data = JSON.stringify({
+            files: files,
+        })
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
+        };
+        fetch("/sendfiles", options)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data[0])
+                console.log(data[1])
+                let alist = document.getElementById("alist")
+                for (let i = 0; i < data[0].length; i++) {
+                    let btn = document.createElement("button")
+                    let a = document.createElement("a")
+                    let href = "/lekcja1/" + data[0][i]
+                    a.innerHTML = data[0][i]
+                    a.href = href
+                    // console.log(a);
+                    btn.appendChild(a)
+                    alist.appendChild(btn)
+                }
+                let alist2 = document.getElementById("alist2")
+                for (let i = 0; i < data[1].length; i++) {
+                    let btn = document.createElement("button")
+                    let a = document.createElement("a")
+                    let href = "/lekcja2/" + data[1][i]
+                    a.innerHTML = data[1][i]
+                    a.href = href
+                    // console.log(a);
+                    btn.appendChild(a)
+                    alist2.appendChild(btn)
+                }
+
+            })
+            .catch(error => console.log(error));
+
+    }
+
+
+</script>
+
+<body onload="functionf()">
+    <h1>Lekcja 1: webGL basics</h1>
+    <div id="alist">
+        <h2>lekcja 1</h2>
+    </div>
+    <div id="alist2">
+        <h2>lekcja 2</h2>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        function someFunction() {
+
+            const range = document.getElementById("range")
+            let size = range.value
+            let mainDiv = document.getElementById("maindiv")
+
+            let maindivSize = (50 * size) + (10 * size)
+            maindiv.style.width = maindivSize + "px"
+
+
+            for (let i = 0; i < size ** 2; i++) {
+                let div = document.createElement("div")
+                div.className = "subdiv"
+                mainDiv.appendChild(div)
+            }
+
+
+            const data = JSON.stringify({
+
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            fetch("/HandleForm", options)
+                .then(response => response.json()) // konwersja na obiekt json, jeśli konieczne
+                .then(data => {
+
+
+                }
+                ) // sformatowane z wcięciami dane odpowiedzi z serwera
+                .catch(error => console.log(error));
+        }
+
+
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #range {
+            width: 100px;
+        }
+
+        button {
+            width: 100px;
+            height: 50px;
+            color: white;
+            background-color: blue;
+            border: 1px solid black;
+        }
+
+        .subdiv {
+            width: 50px;
+            height: 50px;
+            background-color: black;
+            margin: 5px;
+            float: left;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>06 - fetch, change color in response</h1>
+
+    <button id="create" onclick="someFunction()">MAKE TABLE</button>
+    <input type="range" id="range" min="2" max="10" value="4">
+    <div id="maindiv">
+
+    </div>
+</body>
+
+</html>

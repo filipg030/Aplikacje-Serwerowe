@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>T: Upload 1 pliku</h1>
+    <form enctype="multipart/form-data" method="POST" action="/handleForm">
+        <input type="date" name="data" id="data">
+        <br>
+        <input type="text" name="nazwa" id="nazwa">
+        <br>
+        <input type="file" required accept="image/*" name="imagetoupload">
+        <br>
+        <input type="submit">
+    </form>
+</body>
+
+</html>

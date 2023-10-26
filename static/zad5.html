@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        function someFunction() {
+            const red = document.getElementById("r")
+            let redval = red.value
+            const blue = document.getElementById("b")
+            let blueval = blue.value
+            const green = document.getElementById("g")
+            let greenval = green.value
+            const alpha = document.getElementById("a")
+            let alphaval = alpha.value
+
+            const data = JSON.stringify({
+                redval: redval,
+                greenval: greenval,
+                blueval: blueval,
+                alphaval: alphaval
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            fetch("/HandleForm", options)
+                .then(response => response.json()) // konwersja na obiekt json, jeśli konieczne
+                .then(data => {
+                    console.log(data);
+                    let red = data.red
+                    let blue = data.blue
+                    let green = data.green
+                    let alpha = data.alpha / 100
+                    let box = document.getElementById("colorbox")
+                    box.style.backgroundColor = "rgba(" + red + "," + green + ',' + blue + ',' + alpha + ")"
+
+                }
+                ) // sformatowane z wcięciami dane odpowiedzi z serwera
+                .catch(error => console.log(error));
+        }
+
+
+    </script>
+    <style>
+        #r,
+        #g,
+        #b,
+        #a {
+            width: 200px;
+        }
+
+        #colorbox {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+        }
+    </style>
+    <script src="../26.09/server05.js"></script>
+
+</head>
+
+<body>
+    <h1>05 - colors fetch ranges</h1>
+
+    <label for="">R:</label>
+    <input type="range" id="r" min="0" max="255" oninput="someFunction()" step="1">
+    <br>
+    <label for="">G:</label>
+    <input type="range" id="g" min="0" max="255" oninput="someFunction()" step="1">
+    <br>
+    <label for="">B:</label>
+    <input type="range" id="b" min="0" max="255" oninput="someFunction()" step="1">
+    <br>
+    <label for="">A:</label>
+    <input type="range" id="a" min="0" max="100" oninput="someFunction()" step="1">
+    <br>
+
+    <div id="colorbox"></div>
+
+</body>
+
+</html>

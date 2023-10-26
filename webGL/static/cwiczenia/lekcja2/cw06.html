@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="../three.js"></script>
+<style>
+    h1 {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        z-index: 2;
+        color: red;
+    }
+
+    #btn {
+        height: 25px;
+        width: 90px;
+        background-color: yellow;
+        color: blue;
+        font-size: larger;
+        position: absolute;
+        top: 100px;
+        left: 25px;
+        z-index: 2;
+        border: 2px solid blue;
+    }
+
+    #root {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+</style>
+
+<script>
+    window.addEventListener("load", function () {
+        // scena 3D
+        let angle = 0
+        const scene = new THREE.Scene();
+        const axes = new THREE.AxesHelper(1000) // osie dodaje do sceny
+        scene.add(axes)
+        const geometry = new THREE.BoxGeometry(100, 100, 100);
+        let materials = [];
+        const btn = document.getElementById("btn")
+        let moving = false
+
+        const textureTop = new THREE.TextureLoader().load('../mats/topgrass.png')
+        textureTop.colorSpace = THREE.SRGBColorSpace;
+        const textureSide = new THREE.TextureLoader().load('../mats/sidegrass.jpg')
+        textureSide.colorSpace = THREE.SRGBColorSpace;
+        const textureBottom = new THREE.TextureLoader().load('../mats/bottomgrass.jpg')
+        textureBottom.colorSpace = THREE.SRGBColorSpace;
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureSide }));
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureSide }));
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureTop }));
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureBottom }));
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureSide }));
+        materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: textureSide }));
+        const cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube); // tworzenie i dodanie bryly do sceny
+
+        // kamera perspektywiczna - przeczytaj dokładnie objaśnienia w komentarzach
+
+        const camera = new THREE.PerspectiveCamera(
+            45,    // kąt patrzenia kamery (FOV - field of view)
+            window.innerWidth / window.innerHeight,    // proporcje widoku, powinny odpowiadać proporcjom ekranu przeglądarki użytkownika
+            0.1,    // minimalna renderowana odległość
+            10000    // maksymalna renderowana odległość od kamery
+        );
+
+        // renderer wykorzystujący WebGL - działa stabilnie na wszystkich
+        // najnowszych przeglądarkach zarówno desktopowych jak mobilnych
+
+        const renderer = new THREE.WebGLRenderer();
+
+        // kolor tła sceny - uwaga na prefix 0x a nie #
+
+        renderer.setClearColor(0xffffff);
+
+        // ustal rozmiary renderowanego okna w px (szer, wys)
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // dodanie renderera do diva, który istnieje na scenie
+
+        document.getElementById("root").appendChild(renderer.domElement);
+
+        camera.position.x = 200;
+        camera.position.y = 200;
+        camera.position.z = 200;
+
+
+        // lub
+
+        // camera.position.set(100, 100, 100)
+
+        // nakierowanie kamery na punkt (0,0,0) w przestrzeni (zakładamy, że istnieje już scena)
+
+        camera.lookAt(scene.position);
+
+        // kluczowy element - animacja
+
+        function render() {
+
+
+            //w tym miejscu ustalamy wszelkie zmiany w projekcie (obrót, skalę, położenie obiektów)
+            //np zmieniająca się wartość rotacji obiektu
+
+            cube.rotation.y += 0.01;
+
+
+            if (moving) {
+                camera.position.z = 200 * Math.cos(angle);
+                camera.position.x = 200 * Math.sin(angle);
+                angle += 0.05
+                camera.lookAt(0, 0, 0)
+            }
+
+
+            //wykonywanie funkcji bez końca, ok 60 fps jeśli pozwala na to wydajność maszyny
+
+            requestAnimationFrame(render);
+            camera.fov = 50;
+            camera.updateProjectionMatrix();
+            // potwierdzenie w konsoli, że render się wykonuje
+
+            console.log("render leci")
+
+            //ciągłe renderowanie / wyświetlanie widoku sceny naszą kamerą
+
+            renderer.render(scene, camera);
+        }
+
+        // na koniec jednokrotne wykonanie powyższej funkcji
+
+        render();
+    })
+</script>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+</style>
+
+<body>
+    <h1>CW05</h1>
+    <div id="btn">Start/Stop</div>
+    <div id="root"></div>
+</body>
+
+</html>

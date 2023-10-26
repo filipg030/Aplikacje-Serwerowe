@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        console.log(new Date().getTime());
+
+        function someFunction() {
+            const firstNameForm = document.getElementById("first")
+            let firstName = firstNameForm.value
+            const lastNameForm = document.getElementById("last")
+            let lastName = lastNameForm.value
+            let logtime = new Date().getTime()
+
+            const data = JSON.stringify({
+                message: "logowanie uzytkownika",
+                firstName: firstName,
+                lastName: lastName,
+                logtime: logtime
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            fetch("/HandleForm", options)
+                .then(response => response.json()) // konwersja na obiekt json, jeśli konieczne
+                .then(data => alert(JSON.stringify(data, null, 5))) // sformatowane z wcięciami dane odpowiedzi z serwera
+                .catch(error => console.log(error));
+        }
+    </script>
+    <style>
+        #submit {
+            width: 100px;
+            height: 100px;
+            border-radius: 100px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>03 - fetch no form</h1>
+    <form action="">
+        <select name="name" id="first">
+            <option value="filip">Filip</option>
+            <option value="konrad">Konrad</option>
+            <option value="ewa">Ewa</option>
+            <option value="jan">Jan</option>
+        </select>
+        <select name="last" id="last">
+            <option value="g">G</option>
+            <option value="k">K</option>
+            <option value="e">E</option>
+            <option value="j">J</option>
+        </select>
+    </form>
+    <div id="submit" onclick="someFunction()">
+        <p>click</p>
+    </div>
+</body>
+
+</html>
