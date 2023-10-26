@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="./img/flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="image" style="width: 200px;">
+    <script>
+        const el = document.getElementsByTagName("img")[0]
+        let w = el.style.width
+        w = parseInt(w)  // string --> int
+        let trolley = true
+        setInterval(() => {
+            if (trolley) w += 20
+            if (!trolley) w -= 20
+            if (w > 1000 || w < 200) trolley = !trolley
+            console.log(w)
+            el.style.width = w + "px"
+        }, 100)
+
+    </script>
+</body>
+
+</html>

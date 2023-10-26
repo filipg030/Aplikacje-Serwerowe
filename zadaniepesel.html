@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let pesel = prompt("Podaj pesel: ", 0)
+        if (pesel.length != 11) {
+            window.alert("Podano zly pesel (zla ilosc cyfr!)")
+            end()
+        } else if (isNaN(pesel)) {
+            window.alert("Podano zly pesel (tylko cyfry!)")
+            end()
+        }
+        pesel = pesel.split("")
+        if (pesel[9] % 2 == 0) {
+            document.write("Jestes kobieta <br>")
+        } else {
+            document.write("Jestes mezczyzna <br>")
+        }
+
+        // dzien
+        let dzien = pesel.slice(4, 6)
+        dzien = dzien.toString()
+        dzien = dzien.split(",").join("")
+        // document.write(dzien)
+
+        // stulecie + miesiac
+        let stulecie = pesel.slice(2, 4)
+        stulecie = stulecie.toString()
+        stulecie = stulecie.split(",").join("")
+        let miesiac = 0
+        if (stulecie > 80 && stulecie < 100) {
+            miesiac = stulecie - 80
+            stulecie = "18"
+        } else if (stulecie > 0 && stulecie < 20) {
+            miesiac = stulecie
+            stulecie = "19"
+        } else if (stulecie > 20 && stulecie < 40) {
+            miesiac = stulecie - 20
+            stulecie = "20"
+        } else if (stulecie > 40 && stulecie < 60) {
+            miesiac = stulecie - 40
+            stulecie = "21"
+        } else if (stulecie > 60 && stulecie < 80) {
+            miesiac = stulecie - 60
+            stulecie = "22"
+        }
+
+        // document.write("stulecie: " + stulecie + "<br> miesiac: " + miesiac)
+
+        // rok ostatnie 2 cyfry
+
+        let rok = pesel.slice(0, 2)
+        rok = rok.toString()
+        rok = rok.split(",").join("")
+        // document.write(rok)
+
+        let dataUrodzenia = dzien + "." + miesiac + "." + stulecie + rok
+        document.write("Urodziles sie: " + dataUrodzenia)
+
+    </script>
+</body>
+
+</html>

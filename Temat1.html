@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lekcja1</title>
+    <style>
+        td {
+            border: 2px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        https://mendela.pl/4k/
+        https://pastebin.com/3TqTrddb
+    -->
+    <script>
+        let powitanie = "<b>Witaj JavaScript</b><br>";
+        document.write(powitanie)
+        /*
+        let i = -111;
+        while(i <= 111){
+            document.write(i + '<br>');
+            i+=1;
+        }*/
+        for (let i = -111; i <= 111; i += 1)
+            document.write(i + '<br>');
+
+        document.write("<hr>")
+
+        for (let j = 50; j > 0; j -= 3)
+            document.write(j + ' ')
+
+        document.write("<hr>")
+        document.write("<br>")
+
+        for (let k = 50; k >= 10; k--) {
+            if (k > 20 && k < 40) {
+                document.write("")
+            }
+            else {
+                document.write(k + ' ')
+            }
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+
+        for (let m = -30; m < 40; m += 2) {
+            if (m > 5 && m < 14) {
+                document.write("")
+            }
+            else {
+                document.write(m + " ")
+            }
+        }
+
+
+        document.write("<br>")
+
+        for (let n = -20; n < 40; n++) {
+            if (n % 2 == 0) {
+                document.write("")
+            }
+            else {
+                if (n > 3 && n < 12) {
+                    document.write("")
+                }
+                else {
+                    document.write(n + ' ')
+                }
+            }
+        }
+
+        document.write("<hr>")
+        document.write("<br>")
+
+        for (let o = -100; o < 41; o++) {
+            if (o % 3 != 0) {
+                document.write("")
+            }
+            else {
+                if (o > -50 && o < 12) {
+                    document.write('')
+                }
+                else {
+                    document.write(o + ' ')
+                }
+            }
+        }
+
+
+        document.write("<br>")
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        const userInput = prompt("Wpisz liczbe")
+
+        let q = userInput
+        for (q > 0; q--;) {
+            document.write("#")
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let r = userInput
+
+        let rmax = r
+        while (r > 0) {
+            if (r == rmax) {
+                let line = rmax
+                for (line > 0; line--;) {
+                    document.write("#")
+                }
+                document.write("<br>")
+            }
+            else if (r == 1) {
+                for (rmax > 0; rmax--;) {
+                    document.write("#")
+                }
+                document.write("<br>")
+            }
+            else {
+                spacenum = rmax - 2
+                spaces = ''
+                for (spacenum > 0; spacenum--;) {
+                    spaces = spaces + '&nbsp;' + '&nbsp;'
+                }
+                document.write("#" + spaces + '#')
+                document.write("<br>")
+            }
+            r -= 1
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let s = userInput
+
+        let smax = s
+        let maxIt = smax - 1
+        while (s > 0) {
+            if (s == smax) {
+                let line = smax
+                for (line > 0; line--;) {
+                    document.write("#")
+                }
+                document.write("<br>")
+            }
+            else if (s == 1) {
+                document.write("#")
+                document.write("<br>")
+            }
+            else {
+                spacenum = 2
+                spaces = ''
+                while (spacenum < maxIt) {
+                    spaces = spaces + '&nbsp;' + '&nbsp;'
+                    spacenum += 1
+                }
+                maxIt -= 1
+                document.write("#" + spaces + '#')
+                document.write("<br>")
+            }
+            s -= 1
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let t = userInput
+        text = ''
+        for (let itCounter = 1; itCounter <= t; itCounter++) {
+            text = text + itCounter
+            document.write(text + '<br>')
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let u = userInput
+        maxIt = u - 1
+        whatToWrite = ''
+        iteration = 1
+        while (u > 0) {
+            spaces = ''
+            spacenum = 0
+            while (spacenum < maxIt) {
+                spaces = spaces + '&nbsp;' + '&nbsp;'
+                spacenum += 1
+            }
+            maxIt -= 1
+            whatToWrite = iteration + whatToWrite
+            document.write(spaces + whatToWrite + "<br>")
+            iteration += 1
+            u -= 1
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let silnia = userInput
+        sum = 1
+        while (silnia > 0) {
+            sum = sum * silnia
+            silnia -= 1
+        }
+
+        document.write(sum)
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let suma = userInput
+        let sum2 = 0
+        for (suma >= 0; suma--;) {
+            if (suma % 2 != 0) {
+                sum2 = sum2 + suma
+            }
+        }
+        document.write(sum2)
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        let pierwsza = userInput
+        let potwierdzenie = true
+        for (let i = 2; i < pierwsza; i++) {
+            if (pierwsza % i == 0) {
+                potwierdzenie = false
+                break
+            }
+        }
+        if (potwierdzenie == true) {
+            window.alert("Liczba pierwsza!")
+        } else {
+            window.alert("Liczba nie jest pierwsza!")
+        }
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        document.write("<table>")
+        for (let k = 0; k <= 20; k++) {
+            if (k == 0) {
+                document.write("<tr><td></td>")
+                for (let j = 1; j <= 20; j++) {
+                    document.write("<td style='background-color: blue'>" + j + "</td>")
+                }
+            } else {
+                document.write("<tr><td style='background-color: blue'>" + k + "</td>")
+                for (let i = 1; i <= 20; i++) {
+                    if (i == k) {
+                        document.write("<td style='background-color: gray'>" + i * k + "</td>")
+                    } else {
+                        document.write("<td style='background-color: orange'>" + i * k + "</td>")
+                    }
+                }
+            }
+        }
+        document.write("</table>")
+
+        document.write("<br>")
+        document.write("<hr>")
+        document.write("<br>")
+
+        
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" value="Tak, uda mi sie to zrobic                    " id="pole"
+        style="width:600px; height: 300px; font-size: 60px;">
+    <script>
+        const el = document.getElementById("pole")
+        function moveFunc(str, arr, last) {
+            for (let i = 0; i < 1; i++) {
+                let str = el.value; console.log(str)
+                let arr = str.split(""); console.log(arr)
+                let first = arr.shift(); console.log(first)
+                arr.push(first)
+                str = arr.join("")
+                el.value = str
+            }
+        }
+        window.setInterval(moveFunc, 100)
+
+    </script>
+</body>
+
+</html>

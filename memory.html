@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-user-drag: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: blanchedalmond;
+        }
+
+        #main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            margin: -200px;
+            top: 35%;
+        }
+
+        #tutaj30,
+        #tutaj60,
+        #tutaj90 {
+            position: absolute;
+            top: 425px;
+            width: 200px;
+        }
+
+        #tutaj30 {
+            left: -100px;
+        }
+
+        #tutaj60 {
+            left: 100px;
+        }
+
+        #tutaj90 {
+            left: 300px;
+        }
+
+        h1 {
+            text-align: center;
+            border: 10px solid red;
+            border-radius: 10px;
+            background-color: yellow;
+        }
+
+        #playfield>img {
+            width: 100px;
+            height: 100px;
+            float: left;
+        }
+
+        #playfield {
+            display: none;
+            width: 400px;
+            height: 400px;
+            margin: -200px;
+            position: absolute;
+            left: 50%;
+            top: 35%;
+        }
+
+        #winScreen {
+            width: 100%;
+            height: 100vh;
+            background-color: gold;
+            color: black;
+            text-align: center;
+            font-size: 100px;
+            display: none;
+        }
+
+        #lossScreen {
+            width: 100%;
+            height: 100vh;
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-size: 100px;
+            display: none;
+        }
+
+        #timerDiv {
+            width: 600px;
+            height: 100px;
+            background-color: lightgray;
+            display: none;
+            margin: -200px;
+            position: absolute;
+            left: 44%;
+            top: 750px;
+            border: 5px solid red;
+            overflow: hidden;
+        }
+
+        #innerTimer {
+            width: 600px;
+            height: 90px;
+            background-color: darkgray;
+            border: 1px solid black;
+        }
+
+        #secondsLeft {
+            text-align: center;
+            color: black;
+            font-size: 99px;
+            height: 100px;
+            width: 400px;
+            position: absolute;
+            top: 0%;
+            z-index: 3;
+        }
+
+        #usernameSub {
+            background-color: green;
+            height: 110px;
+            width: 400px;
+            border: 1px solid darkgreen;
+            border-radius: 10px;
+            margin-left: 40%;
+        }
+
+        #username {
+            width: 400px;
+            height: 50px;
+            margin-left: 20px;
+        }
+
+        table {
+            float: left;
+            border: 2px solid black;
+            width: 200px;
+            border-radius: 10px;
+            background-color: lightblue;
+        }
+
+        td,
+        tr {
+            border: 1px solid green;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .header {
+            background-color: green;
+        }
+    </style>
+
+    <script>
+
+        let startTimer = false
+
+
+        let records30 = []
+        let records60 = []
+        let records90 = []
+        function Leaderboard() {
+            records30 = []
+            records60 = []
+            records90 = []
+            let cookieLoad = document.cookie
+            cookieLoad = cookieLoad.split("; ")
+            for (let i = 0; i < cookieLoad.length; i++) {
+                let records = cookieLoad[i]
+                records = records.split("=")
+                if (records[0] == "record30") {
+                    console.log(records[1] + " for records 30s");
+                    splitAgain = records[1].split(",")
+                    for (let k = 0; k < splitAgain.length; k += 2) {
+
+                        records30.push([splitAgain[k], splitAgain[k + 1]])
+                    }
+                    records30.sort(([a, b], [c, d]) => b - d)
+                    if (records30.length > 10) {
+                        for (let x = 10; x < records30.length; x++) {
+                            records30.splice(x, 1)
+                        }
+                    }
+                } else if (records[0] == "record60") {
+                    console.log(records[1] + " for records 60s");
+                    splitAgain = records[1].split(",")
+                    for (let k = 0; k < splitAgain.length; k += 2) {
+                        records60.push([splitAgain[k], splitAgain[k + 1]])
+                    }
+                    records60.sort(([a, b], [c, d]) => b - d)
+                    if (records60.length > 10) {
+                        for (let x = 10; x < records60.length; x++) {
+                            records60.splice(x, 1)
+                        }
+                    }
+                } else {
+                    console.log(records[1] + " for records 90s");
+                    splitAgain = records[1].split(",")
+                    records90 = []
+                    for (let k = 0; k < splitAgain.length; k += 2) {
+                        records90.push([splitAgain[k], splitAgain[k + 1]])
+                    }
+                    records90.sort(([a, b], [c, d]) => b - d)
+                    if (records90.length > 10) {
+                        for (let x = 10; x < records90.length; x++) {
+                            records90.splice(x, 1)
+                        }
+                    }
+                }
+                // console.log(records);
+            }
+            // console.log(records30, records60, records90);
+            let table30 = document.createElement("table")
+            let caption30 = document.createElement("caption")
+            caption30.innerHTML = "Leaderboard 30s"
+            table30.append(caption30)
+            for (let i = 0; i < records30.length + 1; i++) {
+                let tr = document.createElement("tr")
+                if (i == 0) {
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = "Name"
+                    td1.className = "header"
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = "Time"
+                    td2.className = "header"
+                    tr.append(td1, td2)
+                    table30.append(tr)
+                }
+                else {
+                    let td1 = document.createElement('td')
+                    let username = records30[i - 1][0]
+                    username = decodeURIComponent(username)
+                    td1.innerHTML = username
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = records30[i - 1][1]
+                    tr.append(td1, td2)
+                    table30.append(tr)
+                }
+            }
+            console.log(table30)
+            let tutaj30 = document.getElementById("tutaj30")
+            tutaj30.innerHTML = ""
+            tutaj30.appendChild(table30)
+            let table60 = document.createElement("table")
+            let caption60 = document.createElement("caption")
+            caption60.innerHTML = "Leaderboard 60s"
+            table60.append(caption60)
+            for (let i = 0; i < records60.length + 1; i++) {
+                let tr = document.createElement("tr")
+                if (i == 0) {
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = "Name"
+                    td1.className = "header"
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = "Time"
+                    td2.className = "header"
+                    tr.append(td1, td2)
+                    table60.append(tr)
+                }
+                else {
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = records60[i - 1][0]
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = records60[i - 1][1]
+                    tr.append(td1, td2)
+                    table60.append(tr)
+                }
+            }
+            console.log(table60)
+            let tutaj60 = document.getElementById("tutaj60")
+            tutaj60.innerHTML = ""
+            tutaj60.appendChild(table60)
+            let table90 = document.createElement("table")
+            let caption = document.createElement("caption")
+            caption.innerHTML = "Leaderboard 90s"
+            table90.append(caption)
+            for (let i = 0; i < records90.length + 1; i++) {
+                let tr = document.createElement("tr")
+                if (i == 0) {
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = "Name"
+                    td1.className = "header"
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = "Time"
+                    td2.className = "header"
+                    tr.append(td1, td2)
+                    table90.append(tr)
+                }
+                else {
+                    let td1 = document.createElement('td')
+                    let username = records90[i - 1][0]
+                    username = decodeURIComponent(username)
+                    td1.innerHTML = username
+                    let td2 = document.createElement('td')
+                    let time = records90[i - 1][1]
+                    console.log(time)
+                    if (time > 60) {
+                        let remain = time - 60
+                        remain = Math.round(remain * 100) / 100
+                        if (remain < 10) {
+                            remain = "0" + remain
+                        }
+                        time = "01:" + remain
+                    }
+
+                    console.log(time);
+                    td2.innerHTML = time
+                    tr.append(td1, td2)
+                    table90.append(tr)
+                }
+            }
+            console.log(table90)
+            let tutaj90 = document.getElementById("tutaj90")
+            tutaj90.innerHTML = ""
+            tutaj90.appendChild(table90)
+        }
+
+        Leaderboard()
+
+        function startGame(n) {
+            let save = []
+            let newDate = new Date()
+            let currentTime = 0
+            let playTime = 1000 * n
+            let startTime = newDate.getTime()
+            let finTime = startTime + playTime
+            const usernameSub = document.getElementById("usernameSub")
+            const userName = document.getElementById("username")
+            // console.log(startTime, finTime);
+            const lossScreen = document.getElementById("lossScreen")
+            const timerDiv = document.getElementById("timerDiv")
+            const innerTimer = document.getElementById("innerTimer")
+            const secondsLeft = document.getElementById("secondsLeft")
+            const title = document.getElementById("title")
+            secondsLeft.innerHTML = ""
+            title.innerHTML = "Memory game " + n + "s"
+            let width = 0;
+            let timeLeft = 0;
+            let cookieTime = 0
+            let min = false
+            let pressedOnce = false
+            let timer = setInterval(() => {
+                if (startTimer) {
+                    newDate = new Date()
+                    currentTime = newDate.getTime()
+                    width = ((finTime - currentTime) / 100)
+                    cookieTime = (finTime - currentTime) / 1000
+                    timeLeft = (finTime - currentTime) / 1000
+                    if (n == 30) {
+                        width *= 2
+                    } else if (n == 60) {
+                        width = width
+                    } else {
+                        width *= 2 / 3
+                        if (timeLeft / 60 >= 1) {
+                            min = true
+                            let secondsOverMin = timeLeft - 60
+                            secondsOverMin = Math.round(secondsOverMin * 1000) / 1000
+                            if (secondsOverMin < 10) {
+                                secondsOverMin = "0" + secondsOverMin
+                            }
+                            cookieTime = (finTime - currentTime) / 1000
+                            timeLeft = "01:" + secondsOverMin
+                        } else {
+                            min = false
+                        }
+                    }
+                    if (min == true) {
+                        if (timeLeft < 10) {
+                            timeLeft = "0" + timeLeft
+                        }
+                        secondsLeft.innerHTML = timeLeft + "s"
+                    } else {
+                        if (timeLeft < 10) {
+                            timeLeft = "0" + timeLeft
+                        }
+                        secondsLeft.innerHTML = "00:" + timeLeft + "s"
+                    }
+                    innerTimer.style.width = width + "px"
+                    if (finTime - currentTime <= 0) {
+                        clearInterval(timer)
+                        playfield.style.display = "none"
+                        timerDiv.style.display = "none"
+                        playfield.innerHTML = ''
+                        lossScreen.style.display = 'block'
+                        setTimeout(() => {
+                            lossScreen.style.display = 'none'
+                            main.style.display = 'block'
+                            title.innerHTML = "Memory game"
+                            startTimer = false
+                        }, 2000)
+                    } else {
+                        // console.log(currentTime, finTime);
+                    }
+                }
+            }, 1)
+            // console.log(currentTime);
+
+
+            const images = ["1.jpg", "1.jpg", "2.jpg", "2.jpg", "3.jpg", "3.jpg", "4.jpg", "4.jpg", "5.jpg", "5.jpg", "6.jpg", "6.jpg", "7.jpg", "7.jpg", "8.jpg", "8.jpg",]
+            let pom = [];
+            let doubleClickPrevention = []
+            let field = Array(16)
+            let flipped = []
+            let pairs = []
+            console.log("start game for: " + n + " seconds.");
+            for (let currentIndex = images.length - 1; currentIndex > 0; currentIndex--) {
+                let j = Math.floor(Math.random() * (currentIndex + 1));
+                let temp = images[currentIndex];
+                images[currentIndex] = images[j];
+                images[j] = temp;
+            }
+            let playfield = document.getElementById("playfield")
+            for (i = 0; i < images.length; i++) {
+                img = document.createElement("img")
+                img.src = "img/0.jpg"
+                img.classList.add("img" + i)
+                playfield.appendChild(img)
+            }
+            let main = document.getElementById("main")
+            main.style.display = "none"
+            playfield.style.display = "block"
+            timerDiv.style.display = "block"
+
+            let imagesLeft = images
+
+            let winScreen = document.getElementById("winScreen")
+
+            let cards = document.getElementsByTagName("img")
+
+            for (let i = 0; i < cards.length; i++) {
+                let card = cards[i]
+                let k = 0
+
+                card.onclick = function Click() {
+                    // console.log(pom.length);
+                    // console.log(flipped.length);
+                    newDate = new Date()
+                    startTime = newDate.getTime()
+                    if (pressedOnce == false) {
+                        finTime = startTime + playTime
+                    }
+                    pressedOnce = true
+                    startTimer = true
+                    if (pairs.includes(this.src) == false) {
+
+                        if (flipped.length < 2) {
+                            if (field[this.className.substr(3)]) {
+                                card.src = field[this.className.substr(3)]
+                            } else {
+                                card.src = "img/" + imagesLeft[k]
+                                imagesLeft.shift(1)
+                                let h = this.className.substr(3)
+                                field[h] = card.src
+                                k += 1
+                            }
+
+                            pom.push(this.src);
+                            doubleClickPrevention.push(this)
+                            flipped.push(this)
+
+                            if (pom.length == 2) {
+                                if (pom[0] == pom[1] && doubleClickPrevention[0].classList != doubleClickPrevention[1].classList) {
+                                    // console.log("para")
+                                    pairs.push(this.src)
+                                    if (pairs.length == 8) {
+                                        playfield.style.display = "none"
+                                        playfield.innerHTML = ''
+                                        timerDiv.style.display = "none"
+                                        winScreen.style.display = 'block'
+                                        clearInterval(timer)
+                                        usernameSub.onclick = function () {
+                                            let userName2 = userName.value
+                                            userName2 = encodeURIComponent(userName2)
+                                            let timeScore = Math.round((n - cookieTime) * 100) / 100
+                                            save = [userName2, timeScore]
+                                            if (n == 30) {
+                                                records30.push(save)
+                                                document.cookie = "record30=" + records30 + ";expires=Thu, 18 Dec 2023 12:00:00 UTC"
+                                            } else if (n == 60) {
+                                                records60.push(save)
+                                                document.cookie = "record60=" + records60 + ";expires=Thu, 18 Dec 2023 12:00:00 UTC"
+                                            } else {
+                                                records90.push(save)
+                                                document.cookie = "record90=" + records90 + ";expires=Thu, 18 Dec 2023 12:00:00 UTC"
+                                            }
+                                            // document.cookie = "username=" + userName2 + ",czas=" + (timeScore) + ";expires=Thu, 18 Dec 2023 12:00:00 UTC"
+                                            setTimeout(() => {
+                                                winScreen.style.display = 'none'
+                                                main.style.display = 'block'
+                                                innerTimer.style.width = "0"
+                                                title.innerHTML = "Memory game"
+                                                startTimer = false
+                                            }, 500)
+                                            Leaderboard()
+                                        }
+                                    }
+                                    // console.log(pairs.length)
+                                    // console.log(pairs);
+                                    flipped = []
+                                    pom = [];
+                                    doubleClickPrevention = []
+                                } else if (doubleClickPrevention[0].classList == doubleClickPrevention[1].classList) {
+                                    // console.log("cant click the same image twice lol!")
+                                    flipped.splice(1, 1)
+                                    doubleClickPrevention.splice(1, 1)
+                                    pom.splice(1, 1)
+                                } else {
+                                    // console.log('nie para')
+                                    setTimeout(() => {
+                                        // console.log("wait")
+                                        for (i = 0; i < flipped.length; i++) {
+                                            flipped[i].src = "./img/0.jpg"
+                                        }
+                                        flipped = []
+                                        pom = [];
+                                        doubleClickPrevention = []
+                                    }, 750)
+
+                                }
+
+                            }
+                        } else {
+                            // console.log("za szybko");
+                        }
+                    } else {
+                        // console.log("to juz ma pare");
+                    }
+                }
+            }
+
+        }
+
+    </script>
+</head>
+
+<body>
+    <!-- 
+        http://www.image-map.net/
+        https://pastebin.com/1wj7RSnK
+    -->
+    <h1 id="title">Memory game!</h1>
+    <div id="main">
+        <img src="img/czolowa.png" usemap="#image-map">
+
+        <map name="image-map">
+            <area onclick="startGame(30)" href="#" coords="10,158,299,178,36,267" shape="poly">
+            <area onclick="startGame(60)" href="#" coords="115,272,374,163,397,286" shape="poly">
+            <area onclick="startGame(90)" href="#" coords="4,284,276,311,23,394" shape="poly">
+        </map>
+
+
+        <div id="tutaj30"></div>
+        <div id="tutaj60">Zagraj aby wyswietlic rekordy!!</div>
+        <div id="tutaj90"></div>
+
+    </div>
+
+    <div id="playfield">
+    </div>
+
+    <div id="winScreen">
+        <p>ALE JAZDA!!!!!!!!!!</p>
+        <form>
+            <input type="text" id="username" value="userName">
+            <div id="usernameSub">Zapisz</div>
+        </form>
+    </div>
+    <div id="lossScreen">
+        <p>Przegrałeś! LOL!!!</p>
+    </div>
+    <div id="timerDiv">
+
+        <div id="innerTimer">
+            <div id="secondsLeft"></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

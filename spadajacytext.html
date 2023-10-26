@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: monospace;
+        }
+
+        textarea {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea name="area" id="area" cols="70" rows="20" placeholder=""></textarea>
+    <script>
+        const area = document.getElementById("area")
+        const cols = area.cols
+        const rows = area.rows
+        let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
+            'C', 'D', "E", 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+
+        function makeRow() {
+            let arr = []
+            for (let i = 0; i < cols; i++) {
+                let x = Math.floor(Math.random() * 100)
+                if (x % 20 == 0) {
+                    let k = Math.floor(Math.random() * letters.length)
+                    arr[i] = letters[k]
+                } else {
+                    arr[i] = ' ';
+                }
+            }
+            return arr
+        }
+
+        let blud = []
+        for (let j = 0; j < rows; j++) {
+            blud.push(makeRow())
+        }
+
+        function go(counter) {
+            if (counter > (rows * 2) - 1) {
+                blud = []
+                for (let j = 0; j < rows; j++) {
+                    blud.push(makeRow())
+                }
+            }
+            else if (counter < rows) {
+                let whatToPush = blud[counter].join("")
+                area.placeholder = whatToPush + "\n" + area.placeholder
+            } else {
+                area.placeholder = "\n" + area.placeholder
+            }
+        }
+
+
+        counter = 0
+        window.setInterval(function () {
+            go(counter++)
+            if (counter == (rows * 2) + 1) {
+                area.placeholder = ""
+                counter = 0
+            }
+        }, 500)
+    </script>
+</body>
+
+</html>

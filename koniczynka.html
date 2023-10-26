@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            position: absolute;
+        }
+    </style>
+
+</head>
+
+<body>
+    <img src="./img/tyler.jpg" alt="tyler" width="100px" id="image">
+
+    <script>
+        let image = document.getElementById("image")
+
+        function circle(angle) {
+            if (angle > 0 && angle <= 180) {
+                angle = angle * Math.PI / 180
+                x = (radius * Math.cos(angle)) + 500
+                y = (radius * Math.sin(angle)) + 500
+            } else if (angle > 180 && angle <= 360) {
+                angle = (angle - 90) * Math.PI / 180
+                x = (radius * Math.cos(angle)) + 400
+                y = (radius * Math.sin(angle)) + 400
+            } else if (angle > 360 && angle <= 540) {
+                angle = (angle - 180) * Math.PI / 180
+                x = (radius * Math.cos(angle)) + 500
+                y = (radius * Math.sin(angle)) + 300
+            } else {
+                angle = (angle - 270) * Math.PI / 180
+                x = (radius * Math.cos(angle)) + 600
+                y = (radius * Math.sin(angle)) + 400
+            }
+            return x, y
+        }
+        let angle = 0
+        let radius = 100
+        window.setInterval(function () {
+            circle(angle++)
+            // console.log(angle)
+            image.style.left = x + 'px'
+            image.style.top = y + 'px'
+            if (angle == 720) {
+                angle = 0
+            }
+        }, 10)
+    </script>
+</body>
+
+</html>
